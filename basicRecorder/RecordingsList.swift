@@ -8,13 +8,18 @@
 import SwiftUI
 
 struct RecordingsList: View {
+    
+    @ObservedObject var audioRecorder: AudioRecorder
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            Text("Empty List")
+        }
     }
 }
 
 struct RecordingsList_Previews: PreviewProvider {
     static var previews: some View {
-        RecordingsList()
+        RecordingsList(audioRecorder: AudioRecorder())
     }
 }
