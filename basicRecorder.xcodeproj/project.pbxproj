@@ -19,6 +19,10 @@
 		A1DCB36327F111FD003E9229 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB36227F111FD003E9229 /* Extensions.swift */; };
 		A1DCB36627F116F0003E9229 /* RecordingDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB36527F116F0003E9229 /* RecordingDataModel.swift */; };
 		A1DCB36827F117E1003E9229 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB36727F117E1003E9229 /* Helper.swift */; };
+		A1DCB36A27F16B52003E9229 /* AudioMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB36927F16B52003E9229 /* AudioMonitor.swift */; };
+		A1DCB38A27F17757003E9229 /* LevelMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB38927F17757003E9229 /* LevelMeter.swift */; };
+		A1DCB38E27F1789C003E9229 /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB38D27F1789C003E9229 /* BarView.swift */; };
+		A1DCB39027F18DEC003E9229 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB38F27F18DEC003E9229 /* AudioPlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +39,10 @@
 		A1DCB36227F111FD003E9229 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		A1DCB36527F116F0003E9229 /* RecordingDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingDataModel.swift; sourceTree = "<group>"; };
 		A1DCB36727F117E1003E9229 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		A1DCB36927F16B52003E9229 /* AudioMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMonitor.swift; sourceTree = "<group>"; };
+		A1DCB38927F17757003E9229 /* LevelMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelMeter.swift; sourceTree = "<group>"; };
+		A1DCB38D27F1789C003E9229 /* BarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
+		A1DCB38F27F18DEC003E9229 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,11 +77,8 @@
 			children = (
 				A1DCB34327F0BE33003E9229 /* basicRecorderApp.swift */,
 				A1DCB34527F0BE33003E9229 /* ContentView.swift */,
-				A1DCB35E27F107BF003E9229 /* AudioFunctions_2.swift */,
-				A1DCB36027F10FA4003E9229 /* RecordingsList.swift */,
-				A1DCB36727F117E1003E9229 /* Helper.swift */,
-				A1DCB36527F116F0003E9229 /* RecordingDataModel.swift */,
-				A1DCB36227F111FD003E9229 /* Extensions.swift */,
+				A1DCB38C27F1776B003E9229 /* Recording */,
+				A1DCB38B27F1775C003E9229 /* Metering */,
 				A1DCB36427F116BF003E9229 /* depreciated */,
 				A1DCB34727F0BE34003E9229 /* Assets.xcassets */,
 				A1DCB34927F0BE34003E9229 /* Preview Content */,
@@ -97,6 +102,29 @@
 				A1DCB35527F0D318003E9229 /* Startup.swift */,
 			);
 			path = depreciated;
+			sourceTree = "<group>";
+		};
+		A1DCB38B27F1775C003E9229 /* Metering */ = {
+			isa = PBXGroup;
+			children = (
+				A1DCB38D27F1789C003E9229 /* BarView.swift */,
+				A1DCB38927F17757003E9229 /* LevelMeter.swift */,
+				A1DCB36927F16B52003E9229 /* AudioMonitor.swift */,
+			);
+			path = Metering;
+			sourceTree = "<group>";
+		};
+		A1DCB38C27F1776B003E9229 /* Recording */ = {
+			isa = PBXGroup;
+			children = (
+				A1DCB36027F10FA4003E9229 /* RecordingsList.swift */,
+				A1DCB36227F111FD003E9229 /* Extensions.swift */,
+				A1DCB36527F116F0003E9229 /* RecordingDataModel.swift */,
+				A1DCB36727F117E1003E9229 /* Helper.swift */,
+				A1DCB35E27F107BF003E9229 /* AudioFunctions_2.swift */,
+				A1DCB38F27F18DEC003E9229 /* AudioPlayer.swift */,
+			);
+			path = Recording;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,13 +200,17 @@
 				A1DCB36127F10FA4003E9229 /* RecordingsList.swift in Sources */,
 				A1DCB34627F0BE33003E9229 /* ContentView.swift in Sources */,
 				A1DCB35F27F107BF003E9229 /* AudioFunctions_2.swift in Sources */,
+				A1DCB38A27F17757003E9229 /* LevelMeter.swift in Sources */,
 				A1DCB36627F116F0003E9229 /* RecordingDataModel.swift in Sources */,
+				A1DCB38E27F1789C003E9229 /* BarView.swift in Sources */,
 				A1DCB36327F111FD003E9229 /* Extensions.swift in Sources */,
+				A1DCB36A27F16B52003E9229 /* AudioMonitor.swift in Sources */,
 				A1DCB35427F0D125003E9229 /* AudioFunctions.swift in Sources */,
 				A1DCB35827F0DF14003E9229 /* NeedRecordingPermission.swift in Sources */,
 				A1DCB36827F117E1003E9229 /* Helper.swift in Sources */,
 				A1DCB34427F0BE33003E9229 /* basicRecorderApp.swift in Sources */,
 				A1DCB35627F0D318003E9229 /* Startup.swift in Sources */,
+				A1DCB39027F18DEC003E9229 /* AudioPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,7 +343,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"basicRecorder/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone access needed to record audio...";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -342,7 +374,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"basicRecorder/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone access needed to record audio...";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -1,9 +1,4 @@
-//
-//  AudioFunctions_2.swift
-//  basicRecorder
-//
-//  Created by Andy Freeman on 3/27/22.
-//
+
 
 import Foundation
 import SwiftUI
@@ -33,6 +28,14 @@ class AudioRecorder: NSObject,ObservableObject {
     func startRecording() {
         let recordingSession = AVAudioSession.sharedInstance()
         
+        if recordingSession.recordPermission != .granted {
+            recordingSession.requestRecordPermission { (isGranted) in
+                if !(isGranted) {
+                    print("need microphone permission")
+                }
+            }
+        }
+        
         do {
             try recordingSession.setCategory(.playAndRecord,mode: .default)
             try recordingSession.setActive(true)
@@ -44,8 +47,8 @@ class AudioRecorder: NSObject,ObservableObject {
         let audioFileName = documentPath.appendingPathComponent("\(Date().toString(dateFormat: "dd-MM-YY_'at'_HH:mm:ss")).m4a")
         
         let settings = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 12000,
+            AVFormatIDKey: Int(kAudioFormatAppleLossless),
+            AVSampleRateKey: 44100,
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
@@ -56,6 +59,7 @@ class AudioRecorder: NSObject,ObservableObject {
             recording = true
         } catch {
             print("Failed to start recording")
+            print(error.localizedDescription)
         }
     }
     
@@ -80,6 +84,19 @@ class AudioRecorder: NSObject,ObservableObject {
         recordings.sort(by: {$0.createdAt.compare($1.createdAt) == .orderedAscending})
         
         objectWillChange.send(self)
+    }
+    
+    func deleteRecording(urlsToDelete: [URL]) {
+        for url in urlsToDelete {
+            print(url)
+            do {
+                try FileManager.default.removeItem(at: url)
+            } catch {
+                print("Could not delete file \(url.lastPathComponent)")
+            }
+        }
+        
+        fetchRecordings()
     }
 
     
