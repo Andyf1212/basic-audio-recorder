@@ -25,6 +25,8 @@ class AudioRecorder: NSObject,ObservableObject {
         }
     }
     
+    var inputGain: Float = 0.5
+    
     func startRecording() {
         let recordingSession = AVAudioSession.sharedInstance()
         
@@ -39,6 +41,7 @@ class AudioRecorder: NSObject,ObservableObject {
         do {
             try recordingSession.setCategory(.playAndRecord,mode: .default)
             try recordingSession.setActive(true)
+            try recordingSession.setInputGain(self.inputGain)
         } catch {
             print("Failed to initialize session")
         }
@@ -97,6 +100,10 @@ class AudioRecorder: NSObject,ObservableObject {
         }
         
         fetchRecordings()
+    }
+    
+    func updateInputGain(newGain: Float) {
+        self.inputGain = newGain
     }
 
     

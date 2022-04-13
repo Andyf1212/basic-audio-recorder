@@ -1,23 +1,33 @@
-
+//
+//  AudioMonitor.swift
+//  basicRecorder
+//
+//  Created by Andy Freeman on 4/12/22.
+//
 
 import Foundation
 import AVFoundation
 
 class AudioMonitor: ObservableObject {
-    var audioRecorder: AVAudioRecorder
-    var timer: Timer?
+    private var audioRecorder: AVAudioRecorder
+    private var timer: Timer?
     
-    var currentSample: Int
-    let numberOfSamples: Int
+    private var currentSample: Int
+    private let numberOfSamples: Int
     
-    @Published var soundSamples: [Float]
+    @Published public var soundSamples: [Float]
     
-    deinit {    // fuck you why are you only happy up here >:(
-        timer?.invalidate()
-        audioRecorder.stop()
+    private func startMonitoring() {
+        audioRecorder.isMeteringEnabled = true
+        audioRecorder.record()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { (timer) in
+            self.audioRecorder.updateMeters()
+            self.soundSamples[self.currentSample] = self.audioRecorder.averagePower(forChannel: 0)
+            self.currentSample = (self.currentSample + 1) % self.numberOfSamples
+        })
     }
     
-    init (numberOfSamples: Int) {
+    init(numberOfSamples: Int) {
         self.numberOfSamples = numberOfSamples
         self.soundSamples = [Float](repeating: .zero, count: numberOfSamples)
         self.currentSample = 0
@@ -26,17 +36,17 @@ class AudioMonitor: ObservableObject {
         if audioSession.recordPermission != .granted {
             audioSession.requestRecordPermission { (isGranted) in
                 if !(isGranted) {
-                    print("Microphone permission required...")
+                    fatalError("Microphone accessed is required for the use of this app.\nLike come on, you're recording.")
                 }
             }
         }
         
         let url = URL(fileURLWithPath: "/dev/null", isDirectory: true)
-        let recorderSettings: [String:Any] = [
+        let recorderSettings: [String: Any] = [
             AVFormatIDKey: NSNumber(value: kAudioFormatAppleLossless),
             AVSampleRateKey: 44100.0,
             AVNumberOfChannelsKey: 1,
-            AVEncoderAudioQualityKey: AVAudioQuality.max.rawValue
+            AVEncoderAudioQualityKey: AVAudioQuality.min.rawValue
         ]
         
         do {
@@ -47,17 +57,12 @@ class AudioMonitor: ObservableObject {
         } catch {
             fatalError(error.localizedDescription)
         }
-        
-        func startMonitoring() {
-            audioRecorder.isMeteringEnabled = true
-            audioRecorder.record()
-            timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { (timer) in
-                self.audioRecorder.updateMeters()
-                self.soundSamples[self.currentSample] = self.audioRecorder.averagePower(forChannel: 0)
-                self.currentSample = (self.currentSample + 1) % self.numberOfSamples
-            })
-        }
-        
-        
+    }
+    
+    
+    
+    deinit {
+        timer?.invalidate()
+        audioRecorder.stop()
     }
 }

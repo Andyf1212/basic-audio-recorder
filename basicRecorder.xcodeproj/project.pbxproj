@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A152FC2F280660B4005718C8 /* visualMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A152FC2E280660B4005718C8 /* visualMeter.swift */; };
+		A152FC31280660C6005718C8 /* meterMeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A152FC30280660C6005718C8 /* meterMeat.swift */; };
+		A152FC3328067447005718C8 /* AudioMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A152FC3228067447005718C8 /* AudioMonitor.swift */; };
 		A1DCB34427F0BE33003E9229 /* basicRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB34327F0BE33003E9229 /* basicRecorderApp.swift */; };
 		A1DCB34627F0BE33003E9229 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB34527F0BE33003E9229 /* ContentView.swift */; };
 		A1DCB34827F0BE34003E9229 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1DCB34727F0BE34003E9229 /* Assets.xcassets */; };
@@ -26,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A152FC2E280660B4005718C8 /* visualMeter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = visualMeter.swift; sourceTree = "<group>"; };
+		A152FC30280660C6005718C8 /* meterMeat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = meterMeat.swift; sourceTree = "<group>"; };
+		A152FC3228067447005718C8 /* AudioMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMonitor.swift; sourceTree = "<group>"; };
 		A1DCB34027F0BE33003E9229 /* basicRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = basicRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1DCB34327F0BE33003E9229 /* basicRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = basicRecorderApp.swift; sourceTree = "<group>"; };
 		A1DCB34527F0BE33003E9229 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +103,9 @@
 		A1DCB36427F116BF003E9229 /* depreciated */ = {
 			isa = PBXGroup;
 			children = (
+				A1DCB38D27F1789C003E9229 /* BarView.swift */,
+				A1DCB36927F16B52003E9229 /* AudioMonitor.swift */,
+				A1DCB38927F17757003E9229 /* LevelMeter.swift */,
 				A1DCB35727F0DF14003E9229 /* NeedRecordingPermission.swift */,
 				A1DCB35327F0D125003E9229 /* AudioFunctions.swift */,
 				A1DCB35527F0D318003E9229 /* Startup.swift */,
@@ -107,9 +116,9 @@
 		A1DCB38B27F1775C003E9229 /* Metering */ = {
 			isa = PBXGroup;
 			children = (
-				A1DCB38D27F1789C003E9229 /* BarView.swift */,
-				A1DCB38927F17757003E9229 /* LevelMeter.swift */,
-				A1DCB36927F16B52003E9229 /* AudioMonitor.swift */,
+				A152FC2E280660B4005718C8 /* visualMeter.swift */,
+				A152FC30280660C6005718C8 /* meterMeat.swift */,
+				A152FC3228067447005718C8 /* AudioMonitor.swift */,
 			);
 			path = Metering;
 			sourceTree = "<group>";
@@ -143,6 +152,8 @@
 			dependencies = (
 			);
 			name = basicRecorder;
+			packageProductDependencies = (
+			);
 			productName = basicRecorder;
 			productReference = A1DCB34027F0BE33003E9229 /* basicRecorder.app */;
 			productType = "com.apple.product-type.application";
@@ -171,6 +182,9 @@
 				Base,
 			);
 			mainGroup = A1DCB33727F0BE33003E9229;
+			packageReferences = (
+				A1F93AA3280550F500E8D462 /* XCRemoteSwiftPackageReference "FDBarGauge" */,
+			);
 			productRefGroup = A1DCB34127F0BE33003E9229 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -207,9 +221,12 @@
 				A1DCB36A27F16B52003E9229 /* AudioMonitor.swift in Sources */,
 				A1DCB35427F0D125003E9229 /* AudioFunctions.swift in Sources */,
 				A1DCB35827F0DF14003E9229 /* NeedRecordingPermission.swift in Sources */,
+				A152FC2F280660B4005718C8 /* visualMeter.swift in Sources */,
 				A1DCB36827F117E1003E9229 /* Helper.swift in Sources */,
 				A1DCB34427F0BE33003E9229 /* basicRecorderApp.swift in Sources */,
+				A152FC3328067447005718C8 /* AudioMonitor.swift in Sources */,
 				A1DCB35627F0D318003E9229 /* Startup.swift in Sources */,
+				A152FC31280660C6005718C8 /* meterMeat.swift in Sources */,
 				A1DCB39027F18DEC003E9229 /* AudioPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,9 +355,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"basicRecorder/Preview Content\"";
+				DEVELOPMENT_TEAM = 57NKDC9RXB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone access needed to record audio...";
@@ -358,6 +377,7 @@
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "the-andy-freeman-company.basicRecorder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -369,9 +389,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"basicRecorder/Preview Content\"";
+				DEVELOPMENT_TEAM = 57NKDC9RXB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Microphone access needed to record audio...";
@@ -389,6 +411,7 @@
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "the-andy-freeman-company.basicRecorder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -417,6 +440,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A1F93AA3280550F500E8D462 /* XCRemoteSwiftPackageReference "FDBarGauge" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fulldecent/FDBarGauge";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = A1DCB33827F0BE33003E9229 /* Project object */;
 }

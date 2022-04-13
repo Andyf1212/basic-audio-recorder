@@ -8,28 +8,38 @@ struct ContentView: View {
     // *~ aesthetics *~
     @State var mainColor = Color(red:26/255, green:54/255, blue:20/255)
     @ObservedObject var audioRecorder: AudioRecorder
+//    @ObservedObject var audioMonitor: AudioMonitor
     
-    private func normalizeSoundLevel(level: Float) -> CGFloat {
-        let level = max(0.2, CGFloat(level) + 50) / 2
-        return CGFloat(level * (300/25))
-    }
+    @State var inputGain: Float = 0.5
+    @State private var isEditing: Bool = false
+    
+    @State var currentLevel: Float = 0.0
     
     var body: some View {
         ZStack {
             mainColor.ignoresSafeArea()
             NavigationView {
                 VStack {
-                    HStack {
-                        Text("Basic Recorder")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color.white)
-                            .multilineTextAlignment(.leading)
-                            .padding()
-                        Spacer()
-                    }
+                    
+                // Recording List
                     RecordingsList(audioRecorder: audioRecorder)
                     
+                // monitoring bar
+                    visualMeter(level: inputGain)
+                    Text("Current level: \(currentLevel)")
+                    
+                // Input Gain Slider
+                    Slider (
+                        value: $inputGain,
+                        in: 0.0...100.0,
+                        onEditingChanged: {editing in
+                            isEditing = editing
+                        }
+                    )
+                        .padding()
+                    Text("\(inputGain)")
+                    
+                // Button
                     if audioRecorder.recording {
                         Button(action: {
                             print("Stopping recording")
@@ -63,8 +73,11 @@ struct ContentView: View {
                                 .padding(.bottom,40)
                         })
                     }
+                
+                
+                    
                 }
-                .navigationTitle("We do be recording")
+                .navigationTitle("I'm going to kill myself.")
                 .toolbar {
                     ToolbarItem(placement:.automatic) {
                         EditButton()
@@ -75,32 +88,6 @@ struct ContentView: View {
     }
 }
 
-
-//let numberOfSamples: Int = 10
-//
-//struct ContentView: View {
-//    @ObservedObject private var mic = AudioMonitor(numberOfSamples: numberOfSamples)
-//
-//    private func normalizeSoundLevel(level: Float) -> CGFloat {
-//        // dBFS scales from -160 [min] to 0 [max]
-//        let normalized = (300 * (level + 160) / (160))
-//        print(normalized)
-//        print(level)
-//
-//        return CGFloat(normalized)
-//    }
-//
-//    var body: some View {
-//        VStack {
-////            HStack (spacing: 4) {
-////                ForEach(mic.soundSamples, id: \.self) {level in
-////                    BarView(value: self.normalizeSoundLevel(level: level))
-////                }
-////            }
-//            LevelMeter(level: self.normalizeSoundLevel(level: mic.soundSamples[mic.soundSamples.count-1]))
-//        }
-//    }
-//}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
