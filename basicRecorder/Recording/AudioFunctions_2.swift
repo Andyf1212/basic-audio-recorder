@@ -105,6 +105,10 @@ class AudioRecorder: NSObject,ObservableObject {
     func updateInputGain(newGain: Float) {
         self.inputGain = newGain
     }
+    
+    func getChannelPower() -> Float {
+        return scaleChannelPower(power: self.audioRecorder.peakPower(forChannel: 0))
+    }
 
     
 }

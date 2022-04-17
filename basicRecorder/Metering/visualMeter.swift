@@ -1,9 +1,3 @@
-//
-//  visualMeter.swift
-//  basicRecorder
-//
-//  Created by Andy Freeman on 4/12/22.
-//
 
 import SwiftUI
 
