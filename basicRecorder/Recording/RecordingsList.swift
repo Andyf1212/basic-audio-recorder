@@ -4,7 +4,7 @@ import SwiftUI
 
 struct RecordingsList: View {
     
-    @ObservedObject var audioRecorder: AudioRecorderMonitor
+    @ObservedObject var audioRecorder: RecordingEngine
     
     var body: some View {
         List {
@@ -28,16 +28,16 @@ struct RecordingRow: View {
     
     var audioURL: URL
     
-    @ObservedObject var audioPlayer = AudioPlayer()
+    @ObservedObject var audioPlayer = RecordingEngine()
     
     var body: some View {
         HStack {
             Text("\(audioURL.lastPathComponent)")
             Spacer()
-            if audioPlayer.isPlaying == false {
+            if audioPlayer.isPlaying() == false {
                 Button(action: {
                     print("Starting audio playback on \(audioURL.lastPathComponent)")
-                    audioPlayer.startPlayback(audio: audioURL)
+                    audioPlayer.startPlayback(url: audioURL)
                 }, label: {
                     Image(systemName: "play.circle")
                         .imageScale(.large)
@@ -59,6 +59,6 @@ struct RecordingRow: View {
 
 struct RecordingsList_Previews: PreviewProvider {
     static var previews: some View {
-        RecordingsList(audioRecorder: AudioRecorderMonitor())
+        RecordingsList(audioRecorder: RecordingEngine())
     }
 }

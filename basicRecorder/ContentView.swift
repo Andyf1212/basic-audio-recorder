@@ -5,41 +5,20 @@ import AVFoundation
 
 
 struct ContentView: View {
-    // *~ aesthetics *~
-    @State var mainColor = Color(red:26/255, green:54/255, blue:20/255)
-    @ObservedObject var audioRecorder: AudioRecorderMonitor
-    
-    @State private var isEditing: Bool = false
-    
+    var recorder: RecordingEngine = RecordingEngine()
+    @State var recording: Bool = false
     var body: some View {
         ZStack {
-            mainColor.ignoresSafeArea()
             NavigationView {
                 VStack {
+                    RecordingsList(audioRecorder: recorder)
                     
-                // Recording List
-                    RecordingsList(audioRecorder: audioRecorder)
-                    
-                // monitoring bar
-                    visualMeter(level: self.audioRecorder.getLevel())
-                    Text("Level: \(audioRecorder.sample)") // FUCK FUCK WHY WIULL YOU NOT UPDATE FAUWAKDVAJK CJCDKSFJASKLOFJDNA
-                    
-                // Input Gain Slider
-                    Slider (
-                        value: $audioRecorder.inputGain,
-                        in: 0.0...100.0,
-                        onEditingChanged: {editing in
-                            isEditing = editing
-                        }
-                    )
-                        .padding()
-                        Text("\(self.audioRecorder.inputGain)")
-                    
-                // Button
-                    if audioRecorder.recording {
+                    // Button
+                    if recording {
                         Button(action: {
                             print("Stopping recording")
-                            self.audioRecorder.toggleRecording()
+                            recording = false
+                            recorder.stopRecording()
                         }, label: {
                             Image(systemName: "stop.fill")
                                 .resizable()
@@ -54,7 +33,8 @@ struct ContentView: View {
                             print("Starting recording")
                             AVAudioSession.sharedInstance().requestRecordPermission { granted in
                                 if granted {
-                                    self.audioRecorder.toggleRecording()
+                                    recording = true
+                                    recorder.startRecording()
                                 } else {
                                     print("Need microphone access.")
                                 }
@@ -69,17 +49,15 @@ struct ContentView: View {
                                 .padding(.bottom,40)
                         })
                     }
-                
-                
-                    
                 }
-                .navigationTitle("I'm going to kill myself.")
-                .toolbar {
-                    ToolbarItem(placement:.automatic) {
+                .navigationTitle("Please end me.")
+                .toolbar{
+                    ToolbarItem(placement: .automatic) {
                         EditButton()
                     }
                 }
             }
+            
         }
     }
     
@@ -89,7 +67,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(audioRecorder: AudioRecorderMonitor())
+        ContentView(recorder: RecordingEngine())
 //        ContentView()
     }
 }

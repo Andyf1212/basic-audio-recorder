@@ -9,7 +9,7 @@ class AudioRecorderMonitor: NSObject, ObservableObject {
     let objectWillChange = PassthroughSubject<AudioRecorderMonitor, Never>()
     var audioRecorder: AVAudioRecorder!
     var timer: Timer?
-    @Published public var sample: Float = 0.0
+    @Published public var sample: Float = 0
     var recordings = [Recording]()
     var recording = false {
         didSet {
@@ -17,6 +17,7 @@ class AudioRecorderMonitor: NSObject, ObservableObject {
         }
     }
     var inputGain: Float = 0.5
+    var gainChanged: Bool = false
     
     // init
     override init() {
@@ -43,6 +44,17 @@ class AudioRecorderMonitor: NSObject, ObservableObject {
     func stopRecorderMonitor() {
         audioRecorder.stop()
         recording = false
+    }
+    
+    func updateInputGain(gain: Float){
+        if gain != inputGain {
+            print("Updating input gain: \(gain)")
+            inputGain = gain
+            gainChanged = true
+        } else {
+            print("Gain is same.  Not updating.")
+            gainChanged = false
+        }
     }
     
     // recording file management
@@ -154,7 +166,21 @@ class AudioRecorderMonitor: NSObject, ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true, block: { (timer) in
             self.audioRecorder.updateMeters()
             self.sample = self.audioRecorder.averagePower(forChannel: 0)
-            print(self.sample)
+            //print(self.sample)
+            // gain handling
+            if self.gainChanged {
+                if audioSession.isInputGainSettable {
+                    do {
+                        try audioSession.setInputGain(self.inputGain)
+                        self.gainChanged = false
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                } else {
+                    print("Cannot adjust input gain for this device.")
+                }
+                print(audioSession.inputGain)
+            }
         })
     }
     
