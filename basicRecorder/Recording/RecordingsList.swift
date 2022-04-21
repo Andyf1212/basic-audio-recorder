@@ -29,15 +29,33 @@ struct RecordingRow: View {
     var audioURL: URL
     
     @ObservedObject var audioPlayer = RecordingEngine()
+    @State private var showingAlert = false
     
     var body: some View {
         HStack {
             Text("\(audioURL.lastPathComponent)")
             Spacer()
-            if audioPlayer.isPlaying() == false {
+            Button(action: {
+                showingAlert = true
+                let alert = UIAlertController(title: "Rename File", message: nil, preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addTextField(configurationHandler: {textField in
+                    textField.placeholder = "Input"
+                })
+                alert.addAction(UIAlertAction(title: "Save", style: .default, handler: {action in
+                    if let name = alert.textFields?.first?.text {
+                        print(name)
+                    }
+                }))
+            }, label: {
+                Image(systemName: "rectangle.and.pencil.and.ellipsis")
+                    .imageScale(.large)
+            })
+            if self.audioPlayer.state != .playing {
                 Button(action: {
                     print("Starting audio playback on \(audioURL.lastPathComponent)")
-                    audioPlayer.startPlayback(url: audioURL)
+                    self.audioPlayer.startPlayback(url: audioURL)
                 }, label: {
                     Image(systemName: "play.circle")
                         .imageScale(.large)

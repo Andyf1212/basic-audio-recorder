@@ -28,6 +28,10 @@ class RecordingEngine: ObservableObject {
     var file: AVAudioFile?
     var player: AVAudioPlayerNode = AVAudioPlayerNode()
     var state: RecordingState = .stopped
+    @Published var currentPower: Float = 0.0
+    @Published var inputScale: Float = 1.0
+    
+    var meter: visualMeter!
     
     var recordings = [Recording]()
     
@@ -44,6 +48,10 @@ class RecordingEngine: ObservableObject {
         player = AVAudioPlayerNode()
         engine.attach(player)
         engine.connect(player, to: engine.outputNode, format: engine.inputNode.outputFormat(forBus: 0))
+        
+        player.installTap(onBus: 0, bufferSize: bufSize, format: player.outputFormat(forBus: 0)) { (buffer, time) in
+            // DO PLAYBACK PROCESSING HERE
+        }
         
         engine.prepare()
     }
@@ -73,8 +81,11 @@ class RecordingEngine: ObservableObject {
         // set up tap note to write buffers to file
         engine.inputNode.installTap(onBus: 0, bufferSize: bufSize, format: engine.inputNode.outputFormat(forBus: 0)) { (buffer, time) in
             // do stuff with buffer here
+            // input volume
             
             
+            self.currentPower = self.returnPower(buffer: buffer)
+            self.objectWillChange.send(self)
             do {
                 try self.file?.write(from: buffer)
             } catch {
@@ -104,7 +115,7 @@ class RecordingEngine: ObservableObject {
     func setupFile() {
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         do {
-            file = try AVAudioFile(forWriting: url.appendingPathComponent(("\(Date().toString(dateFormat: "'ENGINE'_dd-MM-YY_'at'_HH:mm:ss")).m4a")), settings: fileSettings)
+            file = try AVAudioFile(forWriting: url.appendingPathComponent(("\(Date().toString(dateFormat: "'ENGINE'_dd-MM-YY_'at'_HH:mm:ss")).caf")), settings: engine.inputNode.outputFormat(forBus: 0).settings)
         } catch {
             fatalError("Error creating output file: \(error.localizedDescription)")
         }
@@ -160,10 +171,7 @@ class RecordingEngine: ObservableObject {
             // post-player handling here
         }
         
-        player.installTap(onBus: 0, bufferSize: bufSize, format: player.outputFormat(forBus: 0)) { (buffer, time) in
-            // DO PLAYBACK PROCESSING HERE
-            
-        }
+        
         
         do {
             state = .playing
@@ -175,18 +183,38 @@ class RecordingEngine: ObservableObject {
     }
     
     func stopPlayback() {
-        player.stop()
+        print("File playback ended")
         player.removeTap(onBus: 0)
+        player.stop()
         engine.stop()
         state = .stopped
     }
     
     // helper functions
     func isPlaying() -> Bool {
-        if state == .playing {
-            return true
-        } else {
-            return false
-        }
+        return self.player.isPlaying
     }
+    
+    func returnPower(buffer: AVAudioPCMBuffer) -> Float{
+        let channelData = buffer.floatChannelData
+          
+        let channelDataValue = channelData!.pointee
+
+          let channelDataValueArray = stride(
+            from: 0,
+            to: Int(buffer.frameLength),
+            by: buffer.stride)
+            .map { channelDataValue[$0] }
+          
+          let rms = sqrt(channelDataValueArray.map {
+            return $0 * $0
+          }
+          .reduce(0, +) / Float(buffer.frameLength))
+          
+          let avgPower = 20 * log10(rms)
+        
+        return scaleChannelPower(power: avgPower) // it's in dB
+    }
+    
+    
 }

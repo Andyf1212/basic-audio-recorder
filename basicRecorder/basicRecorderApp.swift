@@ -6,8 +6,8 @@ import SwiftUI
 struct basicRecorderApp: App {
     var body: some Scene {
         WindowGroup {
+            //TestView()
             ContentView()
-//            ContentView()
         }
     }
 }

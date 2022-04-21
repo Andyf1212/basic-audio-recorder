@@ -11,6 +11,9 @@
 		A152FC31280660C6005718C8 /* meterMeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A152FC30280660C6005718C8 /* meterMeat.swift */; };
 		A16DE7C2280BC6D300080704 /* AudioRecorderMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A16DE7C1280BC6D300080704 /* AudioRecorderMonitor.swift */; };
 		A1B4929E280D14BD00BE081F /* RecordingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B4929D280D14BD00BE081F /* RecordingEngine.swift */; };
+		A1B4AF9A281108B30027D2AF /* NewEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B4AF99281108B30027D2AF /* NewEngine.swift */; };
+		A1B4AF9C281109D30027D2AF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B4AF9B281109D30027D2AF /* TestView.swift */; };
+		A1B4AF9F281116CC0027D2AF /* BasicAudioPlayer in Frameworks */ = {isa = PBXBuildFile; productRef = A1B4AF9E281116CC0027D2AF /* BasicAudioPlayer */; };
 		A1DCB34427F0BE33003E9229 /* basicRecorderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB34327F0BE33003E9229 /* basicRecorderApp.swift */; };
 		A1DCB34627F0BE33003E9229 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1DCB34527F0BE33003E9229 /* ContentView.swift */; };
 		A1DCB34827F0BE34003E9229 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1DCB34727F0BE34003E9229 /* Assets.xcassets */; };
@@ -27,6 +30,8 @@
 		A152FC30280660C6005718C8 /* meterMeat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = meterMeat.swift; sourceTree = "<group>"; };
 		A16DE7C1280BC6D300080704 /* AudioRecorderMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderMonitor.swift; sourceTree = "<group>"; };
 		A1B4929D280D14BD00BE081F /* RecordingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingEngine.swift; sourceTree = "<group>"; };
+		A1B4AF99281108B30027D2AF /* NewEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEngine.swift; sourceTree = "<group>"; };
+		A1B4AF9B281109D30027D2AF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		A1DCB34027F0BE33003E9229 /* basicRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = basicRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1DCB34327F0BE33003E9229 /* basicRecorderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = basicRecorderApp.swift; sourceTree = "<group>"; };
 		A1DCB34527F0BE33003E9229 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B4AF9F281116CC0027D2AF /* BasicAudioPlayer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +77,7 @@
 			children = (
 				A1DCB34327F0BE33003E9229 /* basicRecorderApp.swift */,
 				A1DCB34527F0BE33003E9229 /* ContentView.swift */,
+				A1B4AF9B281109D30027D2AF /* TestView.swift */,
 				A1DCB38C27F1776B003E9229 /* Recording */,
 				A1DCB38B27F1775C003E9229 /* Metering */,
 				A1DCB36427F116BF003E9229 /* depreciated */,
@@ -113,6 +120,7 @@
 				A1DCB36727F117E1003E9229 /* Helper.swift */,
 				A16DE7C1280BC6D300080704 /* AudioRecorderMonitor.swift */,
 				A1B4929D280D14BD00BE081F /* RecordingEngine.swift */,
+				A1B4AF99281108B30027D2AF /* NewEngine.swift */,
 				A1DCB38F27F18DEC003E9229 /* AudioPlayer.swift */,
 			);
 			path = Recording;
@@ -135,6 +143,7 @@
 			);
 			name = basicRecorder;
 			packageProductDependencies = (
+				A1B4AF9E281116CC0027D2AF /* BasicAudioPlayer */,
 			);
 			productName = basicRecorder;
 			productReference = A1DCB34027F0BE33003E9229 /* basicRecorder.app */;
@@ -166,6 +175,7 @@
 			mainGroup = A1DCB33727F0BE33003E9229;
 			packageReferences = (
 				A1F93AA3280550F500E8D462 /* XCRemoteSwiftPackageReference "FDBarGauge" */,
+				A1B4AF9D281116CC0027D2AF /* XCRemoteSwiftPackageReference "BasicAudioPlayer" */,
 			);
 			productRefGroup = A1DCB34127F0BE33003E9229 /* Products */;
 			projectDirPath = "";
@@ -195,6 +205,7 @@
 			files = (
 				A1DCB36127F10FA4003E9229 /* RecordingsList.swift in Sources */,
 				A16DE7C2280BC6D300080704 /* AudioRecorderMonitor.swift in Sources */,
+				A1B4AF9A281108B30027D2AF /* NewEngine.swift in Sources */,
 				A1DCB34627F0BE33003E9229 /* ContentView.swift in Sources */,
 				A1DCB36627F116F0003E9229 /* RecordingDataModel.swift in Sources */,
 				A1DCB36327F111FD003E9229 /* Extensions.swift in Sources */,
@@ -203,6 +214,7 @@
 				A1B4929E280D14BD00BE081F /* RecordingEngine.swift in Sources */,
 				A1DCB34427F0BE33003E9229 /* basicRecorderApp.swift in Sources */,
 				A152FC31280660C6005718C8 /* meterMeat.swift in Sources */,
+				A1B4AF9C281109D30027D2AF /* TestView.swift in Sources */,
 				A1DCB39027F18DEC003E9229 /* AudioPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,6 +430,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A1B4AF9D281116CC0027D2AF /* XCRemoteSwiftPackageReference "BasicAudioPlayer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fabiovinotti/BasicAudioPlayer";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		A1F93AA3280550F500E8D462 /* XCRemoteSwiftPackageReference "FDBarGauge" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fulldecent/FDBarGauge";
@@ -427,6 +447,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A1B4AF9E281116CC0027D2AF /* BasicAudioPlayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B4AF9D281116CC0027D2AF /* XCRemoteSwiftPackageReference "BasicAudioPlayer" */;
+			productName = BasicAudioPlayer;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A1DCB33827F0BE33003E9229 /* Project object */;
 }

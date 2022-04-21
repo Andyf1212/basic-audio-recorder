@@ -5,14 +5,27 @@ import AVFoundation
 
 
 struct ContentView: View {
-    var recorder: RecordingEngine = RecordingEngine()
+    @ObservedObject var recorder: RecordingEngine = RecordingEngine()
     @State var recording: Bool = false
+    @State var playing: Bool = false
+    @State private var isEditing = true
     var body: some View {
         ZStack {
             NavigationView {
                 VStack {
                     RecordingsList(audioRecorder: recorder)
                     
+                    // Meter
+                    visualMeter(level: recorder.currentPower)
+                    
+                    // input gain slider
+                    Slider (value: $recorder.inputScale,
+                            in: 0.0...1.0,
+                            onEditingChanged: { editing in
+                                isEditing = editing
+                    })
+                    Text("\(recorder.inputScale)")
+                                    
                     // Button
                     if recording {
                         Button(action: {
