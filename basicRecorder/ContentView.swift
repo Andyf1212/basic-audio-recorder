@@ -5,33 +5,35 @@ import AVFoundation
 
 
 struct ContentView: View {
-    @ObservedObject var recorder: RecordingEngine = RecordingEngine()
-    @State var recording: Bool = false
-    @State var playing: Bool = false
-    @State private var isEditing = true
+    @ObservedObject var recorder: RecordEngine
+    @ObservedObject var monitor: MonitorEngine
+    var fileManager: mFileManager
+        
+    
     var body: some View {
         ZStack {
             NavigationView {
                 VStack {
-                    RecordingsList(audioRecorder: recorder)
+                    // list of recordings
+                    RecordingsList(fileManager: fileManager)
                     
-                    // Meter
-                    visualMeter(level: recorder.currentPower)
+                    // VU meter
+                    if monitor.state == .stopped {
+                        // CASE RECORDING
+                        visualMeter(level: recorder.level)
+                        Text("\(recorder.level)")
+                    }
                     
-                    // input gain slider
-                    Slider (value: $recorder.inputScale,
-                            in: 0.0...1.0,
-                            onEditingChanged: { editing in
-                                isEditing = editing
-                    })
-                    Text("\(recorder.inputScale)")
-                                    
-                    // Button
-                    if recording {
+                    // Gain Slider
+                    
+                    // Record button
+                    if monitor.state == .stopped {
+                        // CASE RECORDING
                         Button(action: {
                             print("Stopping recording")
-                            recording = false
                             recorder.stopRecording()
+                            fileManager.fetchRecordings()
+                            monitor.startMonitoring()
                         }, label: {
                             Image(systemName: "stop.fill")
                                 .resizable()
@@ -42,16 +44,11 @@ struct ContentView: View {
                                 .padding(.bottom, 40)
                         })
                     } else {
-                        Button (action: {
+                        // CASE NOT RECORDING
+                        Button(action: {
                             print("Starting recording")
-                            AVAudioSession.sharedInstance().requestRecordPermission { granted in
-                                if granted {
-                                    recording = true
-                                    recorder.startRecording()
-                                } else {
-                                    print("Need microphone access.")
-                                }
-                            }
+                            monitor.stopMonitoring()
+                            recorder.startRecording()
                         }, label: {
                             Image(systemName: "circle.fill")
                                 .resizable()
@@ -59,7 +56,7 @@ struct ContentView: View {
                                 .frame(width: 100, height: 100)
                                 .clipped()
                                 .foregroundColor(Color.red)
-                                .padding(.bottom,40)
+                                .padding(.bottom, 40)
                         })
                     }
                 }
@@ -70,7 +67,6 @@ struct ContentView: View {
                     }
                 }
             }
-            
         }
     }
     
@@ -80,7 +76,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(recorder: RecordingEngine())
+        ContentView(recorder: RecordEngine(), monitor: MonitorEngine(), fileManager: mFileManager())
 //        ContentView()
     }
 }

@@ -12,7 +12,7 @@ import SwiftUI
 
 class RecordingEngine: ObservableObject {
     enum RecordingState {
-        case recording, paused, stopped, playing
+        case recording, paused, stopped, playing, monitoring
     }
     
     let bufSize: UInt32 = 4096
@@ -37,9 +37,10 @@ class RecordingEngine: ObservableObject {
     
     // init
     init() {
-        print("initializing engine")
+        print("initializing recording engine")
         fetchRecordings()
         setupEngine()
+       // startMonitoring()
     }
     
     // set up the engine
@@ -58,6 +59,7 @@ class RecordingEngine: ObservableObject {
     
     // set up the recording
     func startRecording() {
+        stopMonitoring()
         // set up audio session
         let session = AVAudioSession.sharedInstance()
         
@@ -85,7 +87,7 @@ class RecordingEngine: ObservableObject {
             
             
             self.currentPower = self.returnPower(buffer: buffer)
-            self.objectWillChange.send(self)
+            // self.objectWillChange.send(self)
             do {
                 try self.file?.write(from: buffer)
             } catch {
@@ -103,11 +105,14 @@ class RecordingEngine: ObservableObject {
     
     // control the recording
     func stopRecording() {
-        do {
+        if state == .recording {
             engine.inputNode.removeTap(onBus: 0)
             engine.stop()
             state = .stopped
             fetchRecordings()
+            startMonitoring()
+        } else {
+            print("Error: Wrong state at recording stop.")
         }
     }
     
@@ -152,6 +157,8 @@ class RecordingEngine: ObservableObject {
     
     // playback
     func startPlayback(url: URL) {
+        stopMonitoring()
+        
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(.playAndRecord, mode: .default)
@@ -183,16 +190,69 @@ class RecordingEngine: ObservableObject {
     }
     
     func stopPlayback() {
-        print("File playback ended")
-        player.removeTap(onBus: 0)
-        player.stop()
-        engine.stop()
-        state = .stopped
+        if state == .playing {
+            print("File playback ended")
+            player.removeTap(onBus: 0)
+            player.stop()
+            engine.stop()
+            state = .stopped
+            startMonitoring()
+        } else {
+            print("Error: wrong state found when stopping playback")
+        }
     }
     
     // helper functions
     func isPlaying() -> Bool {
-        return self.player.isPlaying
+        if self.state == .playing {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // monitoring
+    func startMonitoring() {
+        // set up audio session
+        let session = AVAudioSession.sharedInstance()
+        
+        if session.recordPermission != .granted {
+            session.requestRecordPermission { (isGranted) in
+                if !(isGranted) {
+                    print("NEED MICROPHONE ACCESS, DIPSHIT")
+                }
+            }
+        }
+        
+        do {
+            try session.setCategory(.playAndRecord, mode: .default)
+            try session.setActive(true)
+        } catch {
+            fatalError("Error setting up recording session: \(error.localizedDescription)")
+        }
+        
+        // set up tap note to write buffers to file
+        engine.inputNode.installTap(onBus: 0, bufferSize: bufSize, format: engine.inputNode.outputFormat(forBus: 0)) { (buffer, time) in
+            // do stuff with buffer here
+            // input volume
+            
+            
+            // self.objectWillChange.send(self)
+            
+        }
+        
+        do {
+            try engine.start()
+            state = .monitoring
+        } catch {
+            fatalError("Error starting monitor: \(error.localizedDescription)")
+        }
+    }
+    
+    func stopMonitoring() {
+        engine.inputNode.removeTap(onBus: 0)
+        engine.stop()
+        state = .stopped
     }
     
     func returnPower(buffer: AVAudioPCMBuffer) -> Float{
@@ -213,7 +273,8 @@ class RecordingEngine: ObservableObject {
           
           let avgPower = 20 * log10(rms)
         
-        return scaleChannelPower(power: avgPower) // it's in dB
+        return avgPower
+        
     }
     
     

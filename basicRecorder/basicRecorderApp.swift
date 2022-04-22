@@ -7,7 +7,7 @@ struct basicRecorderApp: App {
     var body: some Scene {
         WindowGroup {
             //TestView()
-            ContentView()
+            ContentView(recorder: RecordEngine(), monitor: MonitorEngine(), fileManager: mFileManager())
         }
     }
 }
