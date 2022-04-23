@@ -5,10 +5,12 @@ import AVFoundation
 
 
 struct ContentView: View {
+
     @ObservedObject var recorder: RecordEngine
     @ObservedObject var monitor: MonitorEngine
     var fileManager: mFileManager
-        
+    
+    @State var showingAlert: Bool = false
     
     var body: some View {
         ZStack {

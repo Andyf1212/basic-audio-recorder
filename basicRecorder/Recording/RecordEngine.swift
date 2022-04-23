@@ -21,6 +21,9 @@ class RecordEngine: ObservableObject {
     @Published var state:State = .stopped
     @Published var level: Float = 0.0
     
+    var signalProcessor = SignalProcessing()
+
+    
     init() {
         setupEngine()
     }
@@ -35,30 +38,8 @@ class RecordEngine: ObservableObject {
         mixer.installTap(onBus: 0, bufferSize: bufSize, format: mixer.outputFormat(forBus: 0)) {(buffer, time) in
             // DO PROCESSING HERE
             
-            // get the level
-            guard let channelData = buffer.floatChannelData else {
-              return
-            }
-
-            let channelDataValue = channelData.pointee
-            let channelDataValueArray = stride(
-              from: 0,
-              to: Int(buffer.frameLength),
-              by: buffer.stride)
-              .map { channelDataValue[$0] }
-
-            let rms = sqrt(channelDataValueArray.map {
-              return $0 * $0
-            }
-            .reduce(0, +) / Float(buffer.frameLength))
-
-            let avgPower = 20 * log10(rms)
-            print(avgPower)
-            let meterLevel = SignalProcessing.scaledPower(power: avgPower)
-
             DispatchQueue.main.async {
-                print("level updated: \(meterLevel), \(channelDataValue)")
-                self.level = meterLevel
+                self.level = self.signalProcessor.translatedPower(buffer: buffer)[0]
             }
         }
         

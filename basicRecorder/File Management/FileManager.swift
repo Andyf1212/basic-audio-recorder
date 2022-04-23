@@ -12,6 +12,8 @@ class mFileManager: ObservableObject {
     let objectWillChange = PassthroughSubject<mFileManager, Never> ()
     var recordings = [Recording]()
     
+    var urlSelected: URL!
+    
     init() {
         fetchRecordings()
     }
@@ -39,5 +41,16 @@ class mFileManager: ObservableObject {
             }
         }
         fetchRecordings()
+    }
+    
+    func getIndex(url: URL) -> Int {
+        var index = 0
+        for url_a in self.recordings {
+            if url == url_a.fileURL {
+                return index
+            }
+            index += 1
+        }
+        return -1
     }
 }
