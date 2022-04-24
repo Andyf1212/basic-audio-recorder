@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import AVFAudio
 import UniformTypeIdentifiers
@@ -28,8 +26,10 @@ struct RecordingsList: View {
 
 struct RecordingRow: View {
     
-    var audioURL: URL
-    @State var fileName: String!
+    @State var audioURL: URL
+    @State var refresh: Bool = false
+    
+    @State var fileName: String? = ""
     
     @ObservedObject var audioPlayer = PlayEngine()
     // @ObservedObject var fileManager = mFileManager()
@@ -39,74 +39,145 @@ struct RecordingRow: View {
     var body: some View {
             HStack {
                 Text("\(audioURL.lastPathComponent)")
+                    .truncationMode(.head)
                 Spacer()
-                Button(action: {
-                    showAlert.toggle()
-                    print("Toggled exporter")
-                }, label: {
-                    Image(systemName:"square.and.arrow.up")
-                })
-                .alert(isPresented: $showAlert,
-                       TextAlert(title: "Export", message: "Enter file name") { result in
-                    if let text = result {
-                        // accepted text
-                        print(text)
+                
+                HStack(alignment: .lastTextBaseline) {
+                    Spacer()
+                    Button(action: {
+                        print("start url: \(audioURL.absoluteString)")
+                        showAlert.toggle()
+                        print("Toggled exporter")
+                    }, label: {
+                        Image(systemName:"square.and.pencil")
+                    })
+                    .alert(isPresented: $showAlert,
+                           TextAlert(title: "Rename File", message: "Enter file name") { result in
+                        if let text = result {
+                            let success = renameFile(srcUrl: audioURL, newName: text)
+                            self.audioURL = success
+                            print(text)
+                        } else {
+                            // cancelled
+                        }
+                    })
+                    .buttonStyle(BorderlessButtonStyle())
+                    
+                    if audioPlayer.state == .playing {
+                        Button(action: {
+                            print("playback stop button")
+                            audioPlayer.stopPlayback()
+                        }, label: {
+                            Image(systemName: "stop.fill")
+                        })
+                        .buttonStyle(BorderlessButtonStyle())
                     } else {
-                        // cancelled
+                        Button(action: {
+                            print("playback start button")
+                            audioPlayer.startPlayback(fileURL: audioURL)
+                        }, label: {
+                            Image(systemName: "play.circle")
+                        })
+                        .buttonStyle(BorderlessButtonStyle())
                     }
-                })
-    
-                .buttonStyle(BorderlessButtonStyle())
-                Spacer()
-                if audioPlayer.state == .playing {
-                    Button(action: {
-                        print("playback stop button")
-                        audioPlayer.stopPlayback()
-                    }, label: {
-                        Image(systemName: "stop.fill")
-                    })
-                    .buttonStyle(BorderlessButtonStyle())
-                } else {
-                    Button(action: {
-                        print("playback start button")
-                        audioPlayer.startPlayback(fileURL: audioURL)
-                    }, label: {
-                        Image(systemName: "play.circle")
-                    })
-                    .buttonStyle(BorderlessButtonStyle())
                 }
             }
     }
     
     // functions
     func exportFile(audioURL: URL, newName: String = "") {
-        do {
-            let myManager = FileManager()
-            
-            // set up export
-            let pathComponents: [String] = audioURL.pathComponents
-            var currentFileName = pathComponents.last
-            var exportName = newName
-            if exportName != "" {
-                // check to see if file extension is still there
-                if exportName.suffix(4) != ".caf" {
-                    exportName.append(".caf")
+        // UNFINISHED
+        
+//        do {
+//            let myManager = FileManager()
+//
+//            // set up export
+//            let pathComponents: [String] = audioURL.pathComponents
+//            var currentFileName = pathComponents.last
+//            var exportName = newName
+//            if exportName != "" {
+//                // check to see if file extension is still there
+//                if exportName.suffix(4) != ".caf" {
+//                    exportName.append(".caf")
+//                }
+//
+//            } else {
+//                exportName = currentFileName ?? "default.caf"
+//            }
+//
+//            // check for myRecordings directory in /Documents/
+//
+//            try myManager.moveItem(at: audioURL, to: audioURL)
+//        } catch {
+//            print("Error exporting file \(audioURL.absoluteString): \(error.localizedDescription)")
+//        }
+//
+//        print("Exported \(newName)")
+    }
+}
+
+func renameFile(srcUrl: URL, newName: String) -> URL {
+    if newName == "" {
+        // don't rename the file if no input is given
+        return srcUrl
+    }
+    
+    var url = srcUrl
+    let current_file_name: String = url.lastPathComponent
+    let current_extension: String = String(current_file_name.suffix(4))   // file extension, we need to match them
+    
+    var outName = newName
+    
+    // remove file extension
+    if String(outName.suffix(4)).first == "." {
+        // assume it's an extension
+        outName = String(outName.dropLast(4))
+    }
+    
+    
+    url = url.deletingLastPathComponent()
+    // check for duplicate files
+    let mFileManager = FileManager()
+    var contents: [String]! = ["error"]
+    do {
+        contents = try mFileManager.contentsOfDirectory(atPath: url.absoluteString)
+    } catch {
+        print("Error loading contents at specified directory \(url.absoluteString): \(error.localizedDescription)")
+    }
+    for path in contents {
+        let current_url = URL(string: path)
+        if current_url?.lastPathComponent == outName {
+            let current_idx = String(outName.suffix(0))
+            var idx_is_suffix = false
+            var new_idx = 0
+            while current_idx == String(new_idx) {
+                new_idx += 1
+                if idx_is_suffix == false {
+                    idx_is_suffix = true
                 }
-                
-            } else {
-                exportName = currentFileName ?? "default.caf"
             }
             
-            // check for myRecordings directory in /Documents/
-            
-            try myManager.moveItem(at: audioURL, to: audioURL)
-        } catch {
-            print("Error exporting file \(audioURL.absoluteString): \(error.localizedDescription)")
+            // if index is already a number, increment
+            if idx_is_suffix {
+                outName = outName.dropLast() + String(new_idx)
+            } else {
+                outName = outName + "_\(new_idx)"
+            }
         }
-        
-        print("Exported \(newName)")
     }
-
+    
+    // add file extension
+    outName += current_extension
+    
+    // actually rename the file
+    do {
+        try mFileManager.moveItem(at: srcUrl, to: url.appendingPathComponent(outName))
+    } catch {
+        print("Error renaming file: \(error.localizedDescription)")
+    }
+    
+    
+    return url.appendingPathComponent(outName)
 }
 
 struct Doc: FileDocument {

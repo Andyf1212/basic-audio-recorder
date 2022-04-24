@@ -63,9 +63,7 @@
 			children = (
 				A1811ECF2812837300A19597 /* FileManager.swift */,
 				A1DCB36027F10FA4003E9229 /* RecordingsList.swift */,
-				A1811ED2281287FE00A19597 /* MonitorEngine.swift */,
 				A1DCB36227F111FD003E9229 /* Extensions.swift */,
-				A1DCB36527F116F0003E9229 /* RecordingDataModel.swift */,
 				A1A6317B28149BC200838AEE /* TextAlertView.swift */,
 			);
 			path = "File Management";
@@ -112,6 +110,7 @@
 		A1DCB38B27F1775C003E9229 /* Metering */ = {
 			isa = PBXGroup;
 			children = (
+				A1811ED2281287FE00A19597 /* MonitorEngine.swift */,
 				A152FC2E280660B4005718C8 /* visualMeter.swift */,
 				A152FC30280660C6005718C8 /* meterMeat.swift */,
 			);
@@ -122,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				A1811ECD28127FE800A19597 /* RecordEngine.swift */,
+				A1DCB36527F116F0003E9229 /* RecordingDataModel.swift */,
 				A1811ECB281276C100A19597 /* PlayEngine.swift */,
 				A1DCB36727F117E1003E9229 /* Helper.swift */,
 				A1811ED42812937C00A19597 /* SignalProcessing.swift */,

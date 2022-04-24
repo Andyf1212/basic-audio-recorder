@@ -6,11 +6,13 @@ import AVFoundation
 
 struct ContentView: View {
 
-    @ObservedObject var recorder: RecordEngine
-    @ObservedObject var monitor: MonitorEngine
-    var fileManager: mFileManager
+    @ObservedObject var recorder: RecordEngine = RecordEngine()
+    @ObservedObject var monitor: MonitorEngine = MonitorEngine()
+    var fileManager:mFileManager = mFileManager()
     
     @State var showingAlert: Bool = false
+    @State var sliderLevel: Float = 0.0
+    
     
     var body: some View {
         ZStack {
@@ -20,13 +22,22 @@ struct ContentView: View {
                     RecordingsList(fileManager: fileManager)
                     
                     // VU meter
-                    if monitor.state == .stopped {
+                    if recorder.state == .recording {
                         // CASE RECORDING
                         visualMeter(level: recorder.level)
                         Text("\(recorder.level)")
+                    } else if monitor.state == .monitoring {
+                        visualMeter(level: monitor.level)
+                        Text("\(monitor.level)")
                     }
                     
                     // Gain Slider
+                    Slider (value: $sliderLevel, in: -96...24) { _ in
+                        monitor.updateInputGain(gain: sliderLevel)
+                        recorder.updateInputGain(gain: sliderLevel)
+                    }
+                    .padding()
+                    Text("\(sliderLevel)")
                     
                     // Record button
                     if monitor.state == .stopped {
@@ -70,6 +81,7 @@ struct ContentView: View {
                 }
             }
         }
+        .environmentObject(monitor)
     }
     
     
@@ -78,7 +90,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(recorder: RecordEngine(), monitor: MonitorEngine(), fileManager: mFileManager())
+        ContentView()
 //        ContentView()
     }
 }

@@ -11,6 +11,7 @@ struct visualMeter: View {
                 .fill(Color.gray)
             self.mySquares
         }
+        .fixedSize(horizontal: false, vertical: true)
         .padding()
     }
     
@@ -26,20 +27,20 @@ struct meterSquares: View {
     
     var body: some View {
         HStack {
-            ForEach(0..<10) { i in
+            ForEach(0..<20) { i in
                 squareArray[i]
             }
         }
         .padding()
     }
     
-    init(numSquares: Int = 10) {
+    init(numSquares: Int = 20) {
         self.numSquares = numSquares
         
         for i in 1...numSquares {
-            if i < 8 {
+            if i < 16 {
                 self.squareArray.append(meterSquare(colorIndex: 0))
-            } else if i < 10 {
+            } else if i < 20 {
                 self.squareArray.append(meterSquare(colorIndex: 1))
             } else {
                 self.squareArray.append(meterSquare(colorIndex: 2))
@@ -60,7 +61,7 @@ struct meterSquares: View {
                     self.squareArray[i].toggle()
                 }
             }
-            currentLevel -= 10.0
+            currentLevel -= 5.0
         }
     }
 }

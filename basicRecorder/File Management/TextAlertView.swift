@@ -1,10 +1,3 @@
-//
-//  TextAlertView.swift
-//  basicRecorder
-//
-//  Created by Andy Freeman on 4/23/22.
-//
-
 import SwiftUI
 
 public struct TextAlert {

@@ -1,10 +1,3 @@
-//
-//  PlayEngine.swift
-//  basicRecorder
-//
-//  Created by Andy Freeman on 4/22/22.
-//
-
 import Foundation
 import AVFoundation
 
@@ -19,6 +12,13 @@ class PlayEngine: ObservableObject {
     var file: URL!
     var player: AVAudioPlayerNode!
     var bufSize: UInt32 = 4096
+    
+    // optional effects
+    var eq = AVAudioUnitEQ()
+    
+    // eq params
+    var eqGlobalGain: Float = 0.0   // scales from -96dB to +24dB
+    
     
     init() {
         setupEngine()
@@ -54,9 +54,11 @@ class PlayEngine: ObservableObject {
             var audioFile: AVAudioFile!
             
             do {
+                let isReachable = try file.checkResourceIsReachable()
+                print("\(fileURL.absoluteString) reachable: \(isReachable)")
                 try audioFile = AVAudioFile(forReading: file)
             } catch {
-                fatalError("Error loading playback file: \(error.localizedDescription)")
+                fatalError("Error loading playback file \(fileURL.absoluteString): \(error.localizedDescription)")
             }
             
             player.scheduleFile(audioFile, at: nil, completionCallbackType: .dataPlayedBack) { _ in

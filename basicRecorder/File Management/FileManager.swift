@@ -1,10 +1,3 @@
-//
-//  FileManager.swift
-//  basicRecorder
-//
-//  Created by Andy Freeman on 4/22/22.
-//
-
 import Foundation
 import Combine
 
