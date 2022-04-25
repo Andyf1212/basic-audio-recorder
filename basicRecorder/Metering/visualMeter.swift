@@ -49,9 +49,9 @@ struct meterSquares: View {
     }
     
     mutating func updateSquares(level: Float) {
-        // level must be from 0.0 to 100.0
+        // level must be from 0.0 to 1.0
         var currentLevel = level
-        for i in 0..<10 {
+        for i in 0..<20 {
             if currentLevel > 0 {
                 if !self.squareArray[i].isTurnedOn() {
                     self.squareArray[i].toggle()
@@ -61,7 +61,7 @@ struct meterSquares: View {
                     self.squareArray[i].toggle()
                 }
             }
-            currentLevel -= 5.0
+            currentLevel -= 0.05
         }
     }
 }

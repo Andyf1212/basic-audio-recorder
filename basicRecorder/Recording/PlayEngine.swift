@@ -19,7 +19,6 @@ class PlayEngine: ObservableObject {
     // eq params
     var eqGlobalGain: Float = 0.0   // scales from -96dB to +24dB
     
-    
     init() {
         setupEngine()
     }
@@ -81,17 +80,13 @@ class PlayEngine: ObservableObject {
     }
     
     func stopPlayback() {
-        if self.state == .playing {
-            print("ending file playback")
-            if self.player.isPlaying {
-                self.player.stop()
-            }
-            self.player.removeTap(onBus: 0)
-            self.engine.stop()
-            self.state = .stopped
-        } else {
-            print("Error: stopPlayback() called during wrong state")
+        print("ending file playback")
+        if self.player.isPlaying {
+            self.player.stop()
         }
+        self.player.removeTap(onBus: 0)
+        self.engine.stop()
+        self.state = .stopped
     }
     
     func isPlaying() -> Bool {
