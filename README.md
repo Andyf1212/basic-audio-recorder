@@ -1,4 +1,3 @@
 # Hello, Finalize (WIP)
-Basic audio recorder (WIP)
+Basic iPhone recording app that bypasses automatic hardware configuration offered in default apps.
 
-pls be patient I'm trying my best
