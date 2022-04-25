@@ -84,7 +84,7 @@ class RecordEngine: ObservableObject {
     func setupFile() {
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         do {
-            file = try AVAudioFile(forWriting: url.appendingPathComponent(("\(Date().toString(dateFormat: "'NEW-ENGINE'_dd-MM-YY_'at'_HH:mm:ss")).caf")), settings: engine.inputNode.outputFormat(forBus: 0).settings)
+            file = try AVAudioFile(forWriting: url.appendingPathComponent(("\(Date().toString(dateFormat: "'Recording'_dd-MM-YY_'at'_HH:mm:ss")).caf")), settings: engine.inputNode.outputFormat(forBus: 0).settings)
         } catch {
             fatalError("Error generating output file: \(error.localizedDescription)")
         }
